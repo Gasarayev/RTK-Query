@@ -13,7 +13,10 @@ export const categoriesApi = createApi({
         method: 'DELETE',
       }),
     }),
+    getCategoriesInfo: builder.query({
+      query: (id) => `categories/${id}`, 
+    }),
   }),
 });
 
-export const { useGetCategoriesApiQuery, useDeleteItemMutation } = categoriesApi;
+export const { useGetCategoriesApiQuery, useDeleteItemMutation, useGetCategoriesInfoQuery} = categoriesApi;

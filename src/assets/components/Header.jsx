@@ -18,6 +18,9 @@ function Header() {
             <Nav.Link as={Link} to="/basket">
               Basket
             </Nav.Link>
+            <Nav.Link as={Link} to={"/Detail"}>
+              Detail
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>

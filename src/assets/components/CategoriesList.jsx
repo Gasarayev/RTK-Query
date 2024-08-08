@@ -7,6 +7,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { useDeleteItemMutation, useGetCategoriesApiQuery } from "../redux/categoriesApi";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 function CategoriesList() {
   // const data = useGetCategoriesApiQuery();
@@ -22,8 +23,6 @@ function CategoriesList() {
     console.log(id)
     refetch();
   }
-
-
 
 
  
@@ -51,7 +50,7 @@ function CategoriesList() {
                 <td>{category.name}</td>
                 <td>{category.description}</td>
                 <td>
-                  <IoMdInformationCircle className="text-info mr-2" />
+                  <Link to={`/Detail/${category.id}`}> <IoMdInformationCircle className="text-info mr-2" /> </Link>
                 </td>
                 <td>
                   <ImBin style={{ cursor: 'pointer' }} onClick={()=>removeCategory(category.id)} className="text-danger mr-2" />
