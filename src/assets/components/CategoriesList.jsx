@@ -6,16 +6,26 @@ import { ImBin } from "react-icons/im";
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { useGetCategoriesApiQuery } from "../redux/categoriesApi";
-import Basket from "./Basket";
+// import Basket from "./Basket";
+import { useDispatch, useSelector } from "react-redux";
+import {addToBasket} from "../redux/basketSlice";
 
 function CategoriesList() {
-  const data = useGetCategoriesApiQuery();
+  // const data = useGetCategoriesApiQuery();
+  
   const { data: categories, refetch, isLoading } = useGetCategoriesApiQuery();
-  const [selectProduct, setSelectProduct] = useState(null)
+  const dispatch = useDispatch()
 
-  const handleBasket = (categoryId) =>{
-    setSelectProduct(categoryId)
-  }
+  const basketItems = useSelector((state) => state.basket.itemsBasket);
+
+  const handleBasket = (basket) => {
+    if (!basketItems.some(item => item.id === basket.id)) {
+      console.log(basket)
+      dispatch(addToBasket(basket));
+    } else {
+      dispatch(removeFromBasket(basket));
+    }
+  };
 
   return (
     <div className="containe">
@@ -50,7 +60,10 @@ function CategoriesList() {
                   <FaRegEdit className="text-success mr-2" />
                 </td>
                 <td>
-                  <SlBasket onClick={()=> handleBasket(category.id)} className="text-primary mr-2" />
+                  <SlBasket  onClick={() => handleBasket(category)} className="text-primary mr-2" />
+                  {/* {basketItems.some(item => item.id === category.id)
+                    ? 'Remove from Basket'
+                    : 'Add to Basket'} */}
                 </td>
                 <td>
                   <FaRegHeart className="text-danger mr-2" />
@@ -60,7 +73,7 @@ function CategoriesList() {
         </tbody>
       </Table>
 
-      {selectProduct && <Basket categoryId={selectProduct} />}
+      
     </div>
   );
 }

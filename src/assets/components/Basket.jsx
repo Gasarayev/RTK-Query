@@ -1,39 +1,50 @@
 import React from "react";
 import { useGetCategoriesApiQuery } from "../redux/categoriesApi";
 import Table from "react-bootstrap/esm/Table";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function Basket() {
-  const { categoryId } = useParams();
-  const { data: products, isLoading } = useGetCategoriesApiQuery(categoryId);
 
-  console.log(useParams())
 
-  console.log(products);
+    // const { data: products = {}, isLoading } = useGetCategoriesApiQuery();
+    // const dispatch = useDispatch();
+
+    const basketItems = useSelector((state) => state.basket.itemsBasket);
+
   return (
-    <div>
-      <h1>Basket Page</h1>
-      {isLoading && <h3>Loading...</h3>}
-
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products &&
-            products.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.description}</td>
+    <div className="w-[100%] flex items-center justify-center">
+      {basketItems.length === 0 ? (
+        <p>Your basket is empty.</p>
+      ) : (
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-2">ID</th>
+              <th className="px-4 py-2">Description</th>
+              <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {basketItems.map((category) => (
+              <tr key={category.id}>
+                <td className="border px-4 py-2">{category.id}</td>
+                <td className="border px-4 py-2">{category.description}</td>
+                <td className="border px-4 py-2">{category.name}</td>
+                <td className="border px-4 py-2 flex items-center justify-start">
+                  <button
+                    onClick={() => handleRemoveFromBasket(category)}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Remove from Basket
+                  </button>
+                </td>
               </tr>
             ))}
-        </tbody>
-      </Table>
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
